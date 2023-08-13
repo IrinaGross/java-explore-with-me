@@ -15,7 +15,7 @@ public interface EventRepository {
     Event add(@NonNull Event event);
 
     @NonNull
-    List<Event> getUserEvents(@NonNull Long userId, @NonNull Pageable pageable);
+    List<Event> findAllByInitiatorId(@NonNull Long userId, @NonNull Pageable pageable);
 
     @NonNull
     Event getEventById(@NonNull Long eventId);
@@ -46,5 +46,5 @@ public interface EventRepository {
     );
 
     @NonNull
-    List<Event> findAllByInitiatorId(@NonNull Set<Long> ids);
+    List<Event> findAllByIdIn(@NonNull Set<Long> ids);
 }

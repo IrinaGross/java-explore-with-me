@@ -106,7 +106,7 @@ class EventServiceImpl implements EventService {
     @Override
     @NotNull
     public List<Event> getUserEvents(@NotNull Long userId, @NotNull Pageable pageable) {
-        return eventRepository.getUserEvents(userId, pageable);
+        return eventRepository.findAllByInitiatorId(userId, pageable);
     }
 
     @Override
