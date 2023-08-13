@@ -26,7 +26,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<shared-dto.version>0.0.1-SNAPSHOT</shared-dto.version>
+		<stats-client.version>0.0.1-SNAPSHOT</stats-client.version>
 		<org.projectlombok.version>1.18.24</org.projectlombok.version>
+		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
 	</properties>
 
 	<build>
