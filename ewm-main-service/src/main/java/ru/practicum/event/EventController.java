@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 
 import static ru.practicum.Const.*;
 import static ru.practicum.Utils.checkDates;
-import static ru.practicum.configuration.JacksonConfiguration.DATE_PATTERN;
 
 @Validated
 @RestController
@@ -50,6 +49,7 @@ public class EventController {
             @RequestParam(name = FROM_PARAM, required = false, defaultValue = FROM_DEFAULT) @NonNull Integer from,
             @RequestParam(name = SIZE_PARAM, required = false, defaultValue = SIZE_DEFAULT) @NonNull Integer size
     ) {
+        checkDates(rangeStart, rangeEnd);
         return service.searchEvents(users, states, categories, rangeStart, rangeEnd, Utils.newPage(from, size)).stream()
                 .map(mapper::mapToFull)
                 .collect(Collectors.toList());
