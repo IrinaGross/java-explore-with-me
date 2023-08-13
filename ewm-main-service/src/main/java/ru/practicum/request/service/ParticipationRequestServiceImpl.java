@@ -32,7 +32,7 @@ class ParticipationRequestServiceImpl implements ParticipationRequestService {
     @Override
     @NonNull
     public ParticipationRequest createParticipationRequest(@NonNull Long userId, @NonNull Long eventId) {
-        var event = eventRepository.getById(eventId);
+        var event = eventRepository.getEventById(eventId);
         checkLimit(event);
         if (Objects.equals(event.getInitiator().getId(), userId)) {
             throw new ConflictException("Инициатор события не может добавить запрос на участие в своём событии");
@@ -58,7 +58,7 @@ class ParticipationRequestServiceImpl implements ParticipationRequestService {
     @NonNull
     public ParticipationRequest cancelParticipationRequest(@NotNull Long userId, @NotNull Long requestId) {
         userRepository.getById(userId);
-        var request = requestRepository.getById(requestId);
+        var request = requestRepository.getRequestById(requestId);
         if (request.getStatus() == RequestStatus.CANCELED) {
             return request;
         }
@@ -85,12 +85,12 @@ class ParticipationRequestServiceImpl implements ParticipationRequestService {
             @NotNull RequestStatus status
     ) {
         userRepository.getById(userId);
-        var event = eventRepository.getById(eventId);
+        var event = eventRepository.getEventById(eventId);
         checkLimit(event);
         checkInitiator(event, userId);
         var requests = new ArrayList<ParticipationRequest>(requestIds.size());
         for (Long requestId : requestIds) {
-            var request = requestRepository.getById(requestId);
+            var request = requestRepository.getRequestById(requestId);
             if (request.getStatus() != RequestStatus.PENDING) {
                 throw new ConflictException("Статус можно изменить только у заявок, находящихся в состоянии ожидания");
             }
@@ -113,7 +113,7 @@ class ParticipationRequestServiceImpl implements ParticipationRequestService {
     @NotNull
     public List<ParticipationRequest> getRequestsForEvent(@NotNull Long userId, @NotNull Long eventId) {
         userRepository.getById(userId);
-        var event = eventRepository.getById(eventId);
+        var event = eventRepository.getEventById(eventId);
         checkInitiator(event, userId);
         return requestRepository.getRequestsByEventId(eventId);
     }

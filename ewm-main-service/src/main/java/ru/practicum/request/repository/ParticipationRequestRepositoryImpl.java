@@ -35,7 +35,7 @@ interface ParticipationRequestRepositoryImpl extends ParticipationRequestReposit
 
     @Override
     @NotNull
-    default ParticipationRequest getById(@NotNull Long requestId) {
+    default ParticipationRequest getRequestById(@NotNull Long requestId) {
         return findById(requestId)
                 .orElseThrow(() -> new NotFoundException(String.format("Запрос на участие с идентификатором %1$s не найден", requestId)));
     }

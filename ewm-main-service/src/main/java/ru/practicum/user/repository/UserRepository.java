@@ -9,10 +9,10 @@ import java.util.List;
 public interface UserRepository {
 
     @NonNull
-    List<User> getAllUsers(@NonNull Pageable pageable);
+    List<User> findAll(@NonNull Pageable pageable);
 
     @NonNull
-    List<User> getAllUsers(@NonNull List<Long> ids, @NonNull Pageable pageable);
+    List<User> findAllByIdIn(@NonNull List<Long> ids, @NonNull Pageable pageable);
 
     @NonNull
     User createUser(@NonNull User user);

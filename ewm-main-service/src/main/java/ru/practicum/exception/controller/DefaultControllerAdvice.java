@@ -1,6 +1,7 @@
 package ru.practicum.exception.controller;
 
 import lombok.NonNull;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,7 +31,7 @@ public class DefaultControllerAdvice {
         return ResponseEntity.badRequest().body(getCustomBody(ex, BAD_REQUEST_STATUS, BAD_REQUEST_REASON));
     }
 
-    @ExceptionHandler(ConflictException.class)
+    @ExceptionHandler({ConflictException.class, DataIntegrityViolationException.class})
     public ResponseEntity<Object> handleConflictException(ConflictException ex) {
         return new ResponseEntity<>(getCustomBody(ex, CONFLICT_STATUS, CONFLICT_REASON), HttpStatus.CONFLICT);
     }

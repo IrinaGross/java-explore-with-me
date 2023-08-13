@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 import ru.practicum.category.model.Category;
+import ru.practicum.compilation.model.Compilation;
 import ru.practicum.request.model.ParticipationRequest;
 import ru.practicum.request.model.RequestStatus;
 import ru.practicum.user.model.User;
@@ -75,6 +76,9 @@ public class Event {
 
     @OneToMany(mappedBy = "event")
     private Collection<ParticipationRequest> requests;
+
+    @ManyToMany(mappedBy = "events")
+    private Collection<Compilation> compilations;
 
     public Collection<ParticipationRequest> getConfirmedRequests() {
         return requests.stream()

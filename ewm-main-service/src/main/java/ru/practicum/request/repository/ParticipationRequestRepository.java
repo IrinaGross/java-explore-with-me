@@ -14,7 +14,7 @@ public interface ParticipationRequestRepository {
     ParticipationRequest findRequestBy(@NonNull Long userId, @NonNull Long eventId);
 
     @NonNull
-    ParticipationRequest getById(@NonNull Long requestId);
+    ParticipationRequest getRequestById(@NonNull Long requestId);
 
     @NonNull
     ParticipationRequest update(@NonNull ParticipationRequest request);
