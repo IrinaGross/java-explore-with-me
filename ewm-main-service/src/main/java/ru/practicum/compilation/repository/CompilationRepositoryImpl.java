@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import ru.practicum.compilation.model.Compilation;
 import ru.practicum.exception.NotFoundException;
 
-import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -41,7 +40,11 @@ interface CompilationRepositoryImpl extends CompilationRepository, JpaRepository
     @Override
     @NotNull
     default List<Compilation> getAll(@Nullable Boolean pinned, @NotNull Pageable pageable) {
-        //TODO реализовать
-        return Collections.emptyList();
+        if (pinned == null) {
+            return findAll(pageable).toList();
+        }
+        return findAllByPinned(pinned, pageable);
     }
+
+    List<Compilation> findAllByPinned(Boolean pinned, Pageable pageable);
 }
