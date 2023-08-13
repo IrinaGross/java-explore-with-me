@@ -9,9 +9,11 @@ import ru.practicum.category.repository.CategoryRepository;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.model.EventState;
 import ru.practicum.event.model.SortType;
+import ru.practicum.event.repository.CustomEventRepository;
 import ru.practicum.event.repository.EventRepository;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
+import ru.practicum.statistics.StatisticsRepository;
 import ru.practicum.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -23,20 +25,22 @@ import java.util.Objects;
 @RequiredArgsConstructor
 class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
+    private final CustomEventRepository customEventRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final StatisticsRepository statisticsRepository;
 
     @Override
     @NotNull
     public List<Event> searchEvents(
             @Nullable List<Long> users,
-            @Nullable List<String> states,
+            @Nullable List<EventState> states,
             @Nullable List<Long> categories,
             @Nullable LocalDateTime rangeStart,
             @Nullable LocalDateTime rangeEnd,
             @NotNull Pageable pageable
     ) {
-        return eventRepository.searchEvents(users, states, categories, rangeStart, rangeEnd, pageable);
+        return customEventRepository.searchEvents(users, states, categories, rangeStart, rangeEnd, pageable);
     }
 
     @Override
@@ -91,7 +95,7 @@ class EventServiceImpl implements EventService {
             @Nullable SortType sort,
             @NotNull Pageable newPage
     ) {
-        return eventRepository.getEvents(query, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, newPage);
+        return customEventRepository.getEvents(query, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, newPage);
     }
 
     @Override
@@ -114,7 +118,6 @@ class EventServiceImpl implements EventService {
                         .state(EventState.PENDING)
                         .initiator(user)
                         .requests(Collections.emptyList())
-                        .viewCount(0L)
                         .build()
         );
     }
@@ -129,10 +132,9 @@ class EventServiceImpl implements EventService {
         return event;
     }
 
-    private static void checkEventDate(Event event) {
-        if (event.getEventDate() != null && event.getEventDate().isBefore(LocalDateTime.now().minusHours(2))) {
-            throw new ConflictException("Дата и время на которые намечено событие не может быть раньше, чем через два часа от текущего момента");
-        }
+    @Override
+    public void addStatisticsRecord(@NotNull String requestURI, @NotNull String remoteAddress) {
+        statisticsRepository.addStatisticRecord(requestURI, remoteAddress);
     }
 
     @NotNull
@@ -163,5 +165,11 @@ class EventServiceImpl implements EventService {
                         .publishedOn(newState == EventState.PUBLISHED ? LocalDateTime.now() : current.getPublishedOn())
                         .build()
         );
+    }
+
+    private static void checkEventDate(Event event) {
+        if (event.getEventDate() != null && event.getEventDate().isBefore(LocalDateTime.now().minusHours(2))) {
+            throw new ConflictException("Дата и время на которые намечено событие не может быть раньше, чем через два часа от текущего момента");
+        }
     }
 }

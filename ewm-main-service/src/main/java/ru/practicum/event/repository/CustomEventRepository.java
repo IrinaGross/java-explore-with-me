@@ -1,4 +1,4 @@
-package ru.practicum.event.service;
+package ru.practicum.event.repository;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +10,8 @@ import ru.practicum.event.model.SortType;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface EventService {
+public interface CustomEventRepository {
+
     @NotNull
     List<Event> searchEvents(
             @Nullable List<Long> users,
@@ -22,25 +23,7 @@ public interface EventService {
     );
 
     @NotNull
-    Event updateEvent(
-            @NotNull Long userId,
-            @NotNull Long eventId,
-            @Nullable Long categoryId,
-            @NotNull Event event
-    );
-
-    @NotNull
-    Event updateEvent(
-            @NotNull Long eventId,
-            @Nullable Long categoryId,
-            @NotNull Event event
-    );
-
-    @NotNull
-    Event getEvent(@NotNull Long eventId);
-
-    @NotNull
-    List<Event> getAll(
+    List<Event> getEvents(
             @Nullable String query,
             @Nullable List<Long> categories,
             @Nullable Boolean paid,
@@ -50,15 +33,4 @@ public interface EventService {
             @Nullable SortType sort,
             @NotNull Pageable pageable
     );
-
-    @NotNull
-    List<Event> getUserEvents(@NotNull Long userId, @NotNull Pageable pageable);
-
-    @NotNull
-    Event addEvent(@NotNull Long userId, @NotNull Long categoryId, @NotNull Event event);
-
-    @NotNull
-    Event getEvent(@NotNull Long userId, @NotNull Long eventId);
-
-    void addStatisticsRecord(@NotNull String requestURI, @NotNull String remoteAddress);
 }
