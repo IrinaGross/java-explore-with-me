@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 import org.springframework.lang.Nullable;
 import ru.practicum.user.dto.NewUserRequest;
 import ru.practicum.user.dto.UserDto;
+import ru.practicum.user.dto.UserShortDto;
 import ru.practicum.user.model.User;
 
 import java.util.Objects;
@@ -16,6 +17,11 @@ public interface UserMapper {
     @Mapping(target = "email", expression = "java(Objects.requireNonNull(model.getEmail()))")
     @Mapping(target = "name", expression = "java(Objects.requireNonNull(model.getName()))")
     UserDto map(@Nullable User model);
+
+    @Nullable
+    @Mapping(target = "id", expression = "java(Objects.requireNonNull(model.getId()))")
+    @Mapping(target = "name", expression = "java(Objects.requireNonNull(model.getName()))")
+    UserShortDto mapToShort(@Nullable User model);
 
     @Nullable
     @Mapping(target = "id", ignore = true)

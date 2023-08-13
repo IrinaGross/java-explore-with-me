@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.category.model.Category;
 import ru.practicum.category.repository.CategoryRepository;
 import ru.practicum.exception.ConflictException;
@@ -33,7 +32,6 @@ class CategoryServiceImpl implements CategoryService {
 
     @Override
     @NotNull
-    @Transactional
     public Category updateCategory(@NotNull Long categoryId, @NotNull Category category) {
         var current = categoryRepository.getById(categoryId);
         var updated = current.toBuilder().name(category.getName()).build();
