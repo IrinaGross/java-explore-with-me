@@ -8,6 +8,7 @@ import ru.practicum.category.mapper.CategoryMapper;
 import ru.practicum.event.dto.*;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.model.EventState;
+import ru.practicum.statistics.StatisticsRepository;
 import ru.practicum.user.mapper.UserMapper;
 
 import java.util.Objects;
@@ -18,6 +19,8 @@ public abstract class EventMapper {
     protected UserMapper userMapper;
     @Autowired
     protected CategoryMapper categoryMapper;
+    @Autowired
+    protected StatisticsRepository statisticsRepository;
 
     @Nullable
     @Mapping(target = "id", source = "id")
@@ -35,7 +38,7 @@ public abstract class EventMapper {
     @Mapping(target = "state", source = "state")
     @Mapping(target = "publishedOn", source = "publishedOn")
     @Mapping(target = "title", source = "title")
-    @Mapping(target = "views", source = "viewCount")
+    @Mapping(target = "views", expression = "java(statisticsRepository.getViewCount(model))")
     public abstract EventFullDto mapToFull(@Nullable Event model);
 
     @Nullable
@@ -47,7 +50,7 @@ public abstract class EventMapper {
     @Mapping(target = "initiator", expression = "java(Objects.requireNonNull(userMapper.mapToShort(model.getInitiator())))")
     @Mapping(target = "paid", source = "paid")
     @Mapping(target = "title", source = "title")
-    @Mapping(target = "views", source = "viewCount")
+    @Mapping(target = "views", expression = "java(statisticsRepository.getViewCount(model))")
     public abstract EventShortDto mapToShort(@Nullable Event model);
 
     @Nullable
@@ -67,7 +70,7 @@ public abstract class EventMapper {
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "initiator", ignore = true)
     @Mapping(target = "requests", ignore = true)
-    @Mapping(target = "viewCount", ignore = true)
+    @Mapping(target = "compilations", ignore = true)
     public abstract Event map(@Nullable UpdateEventAdminRequest dto);
 
     @Nullable
@@ -87,7 +90,7 @@ public abstract class EventMapper {
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "initiator", ignore = true)
     @Mapping(target = "requests", ignore = true)
-    @Mapping(target = "viewCount", ignore = true)
+    @Mapping(target = "compilations", ignore = true)
     public abstract Event map(@Nullable UpdateEventUserRequest dto);
 
     @Nullable
@@ -107,7 +110,7 @@ public abstract class EventMapper {
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "initiator", ignore = true)
     @Mapping(target = "requests", ignore = true)
-    @Mapping(target = "viewCount", ignore = true)
+    @Mapping(target = "compilations", ignore = true)
     public abstract Event map(@Nullable NewEventDto dto);
 
     protected LocationDto toLocationDto(Float lat, Float lon) {
