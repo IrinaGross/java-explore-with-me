@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static ru.practicum.Const.DATE_PATTERN;
 import static ru.practicum.Utils.checkDates;
 
 @Validated
@@ -28,7 +29,6 @@ import static ru.practicum.Utils.checkDates;
 @RequestMapping
 @RequiredArgsConstructor
 public class StatsController {
-    private static final String STATS_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private static final String START_REQUEST_PARAM = "start";
     private static final String END_REQUEST_PARAM = "end";
     private static final String URIS_REQUEST_PARAM = "uris";
@@ -46,8 +46,8 @@ public class StatsController {
 
     @GetMapping("/stats")
     public List<ViewResponseDto> getStatistics(
-            @RequestParam(name = START_REQUEST_PARAM) @NonNull @DateTimeFormat(pattern = STATS_DATE_PATTERN) LocalDateTime start,
-            @RequestParam(name = END_REQUEST_PARAM) @NonNull @DateTimeFormat(pattern = STATS_DATE_PATTERN) LocalDateTime end,
+            @RequestParam(name = START_REQUEST_PARAM) @NonNull @DateTimeFormat(pattern = DATE_PATTERN) LocalDateTime start,
+            @RequestParam(name = END_REQUEST_PARAM) @NonNull @DateTimeFormat(pattern = DATE_PATTERN) LocalDateTime end,
             @RequestParam(name = URIS_REQUEST_PARAM, required = false) @Nullable List<String> uris,
             @RequestParam(name = UNIQUE_REQUEST_PARAM, required = false, defaultValue = "false") @NonNull Boolean unique
     ) {
