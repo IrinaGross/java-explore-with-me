@@ -2,7 +2,6 @@ package ru.practicum.request.service;
 
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.model.EventState;
@@ -30,8 +29,8 @@ class ParticipationRequestServiceImpl implements ParticipationRequestService {
             (event) -> event.getLimit() == 0 || !event.getNeedModerationRequests();
 
     @Override
-    @NonNull
-    public ParticipationRequest createParticipationRequest(@NonNull Long userId, @NonNull Long eventId) {
+    @NotNull
+    public ParticipationRequest createParticipationRequest(@NotNull Long userId, @NotNull Long eventId) {
         var event = eventRepository.getEventById(eventId);
         checkLimit(event);
         if (Objects.equals(event.getInitiator().getId(), userId)) {
@@ -55,7 +54,7 @@ class ParticipationRequestServiceImpl implements ParticipationRequestService {
     }
 
     @Override
-    @NonNull
+    @NotNull
     public ParticipationRequest cancelParticipationRequest(@NotNull Long userId, @NotNull Long requestId) {
         userRepository.getById(userId);
         var request = requestRepository.getRequestById(requestId);
@@ -70,10 +69,10 @@ class ParticipationRequestServiceImpl implements ParticipationRequestService {
     }
 
     @Override
-    @NonNull
-    public List<ParticipationRequest> getRequestsByUser(@NonNull Long userId) {
+    @NotNull
+    public List<ParticipationRequest> getRequestsByUser(@NotNull Long userId) {
         userRepository.getById(userId);
-        return requestRepository.getRequestsByUserId(userId);
+        return requestRepository.findAllByUserId(userId);
     }
 
     @Override
@@ -115,7 +114,7 @@ class ParticipationRequestServiceImpl implements ParticipationRequestService {
         userRepository.getById(userId);
         var event = eventRepository.getEventById(eventId);
         checkInitiator(event, userId);
-        return requestRepository.getRequestsByEventId(eventId);
+        return requestRepository.findAllByEventId(eventId);
     }
 
     private static void checkLimit(Event event) {

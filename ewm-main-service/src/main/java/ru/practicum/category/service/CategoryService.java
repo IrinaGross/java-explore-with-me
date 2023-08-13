@@ -1,23 +1,23 @@
 package ru.practicum.category.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.NonNull;
 import ru.practicum.category.model.Category;
 
 import java.util.List;
 
 public interface CategoryService {
-    @NonNull
-    Category createCategory(@NonNull Category category);
+    @NotNull
+    Category createCategory(@NotNull Category category);
 
-    void deleteCategory(@NonNull Long categoryId);
+    void deleteCategory(@NotNull Long categoryId);
 
-    @NonNull
-    Category updateCategory(@NonNull Long categoryId, @NonNull Category category);
+    @NotNull
+    Category updateCategory(@NotNull Long categoryId, @NotNull Category category);
 
-    @NonNull
-    List<Category> getCategories(@NonNull Pageable pageable);
+    @NotNull
+    List<Category> getCategories(@NotNull Pageable pageable);
 
-    @NonNull
-    Category getCategory(@NonNull Long categoryId);
+    @NotNull
+    Category getCategory(@NotNull Long categoryId);
 }

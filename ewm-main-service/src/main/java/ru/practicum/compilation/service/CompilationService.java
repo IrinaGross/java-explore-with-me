@@ -1,25 +1,25 @@
 package ru.practicum.compilation.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import ru.practicum.compilation.model.Compilation;
 
 import java.util.List;
 import java.util.Set;
 
 public interface CompilationService {
-    void deleteCompilation(@NonNull Long compilationId);
+    void deleteCompilation(@NotNull Long compilationId);
 
-    @NonNull
-    Compilation createCompilation(@NonNull Compilation model, @Nullable Set<Long> eventIds);
+    @NotNull
+    Compilation createCompilation(@NotNull Compilation model, @Nullable Set<Long> eventIds);
 
-    @NonNull
-    Compilation updateCompilation(@NonNull Long compilationId, @NonNull Compilation model, @Nullable Set<Long> eventIds);
+    @NotNull
+    Compilation updateCompilation(@NotNull Long compilationId, @NotNull Compilation model, @Nullable Set<Long> eventIds);
 
-    @NonNull
-    List<Compilation> getAll(@Nullable Boolean pinned, @NonNull Pageable pageable);
+    @NotNull
+    List<Compilation> getAll(@Nullable Boolean pinned, @NotNull Pageable pageable);
 
-    @NonNull
-    Compilation getById(@NonNull Long compilationId);
+    @NotNull
+    Compilation getById(@NotNull Long compilationId);
 }
