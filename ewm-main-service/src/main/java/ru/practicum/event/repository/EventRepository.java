@@ -8,6 +8,7 @@ import ru.practicum.event.model.SortType;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public interface EventRepository {
     @NonNull
@@ -17,7 +18,7 @@ public interface EventRepository {
     List<Event> getUserEvents(@NonNull Long userId, @NonNull Pageable pageable);
 
     @NonNull
-    Event getById(@NonNull Long eventId);
+    Event getEventById(@NonNull Long eventId);
 
     @NonNull
     Event update(@NonNull Event updated);
@@ -43,4 +44,7 @@ public interface EventRepository {
             @Nullable SortType sort,
             @NonNull Pageable pageable
     );
+
+    @NonNull
+    List<Event> findAllByIdIn(@NonNull Set<Long> ids);
 }

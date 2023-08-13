@@ -2,29 +2,14 @@ package ru.practicum.user.repository;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.user.model.User;
 
-import java.util.List;
-
 @Repository
 interface UserRepositoryImpl extends UserRepository, CrudRepository<User, Long> {
-    @Override
-    @NotNull
-    default List<User> getAllUsers(@NotNull Pageable pageable) {
-        return findAll(pageable);
-    }
-
-    @Override
-    @NotNull
-    default List<User> getAllUsers(@NonNull List<Long> ids, @NotNull Pageable pageable) {
-        return findAllByIdIn(ids, pageable);
-    }
 
     @Override
     @NotNull
@@ -47,8 +32,4 @@ interface UserRepositoryImpl extends UserRepository, CrudRepository<User, Long> 
     default void deleteUser(@NotNull Long userId) {
         deleteById(userId);
     }
-
-    List<User> findAll(Pageable pageable);
-
-    List<User> findAllByIdIn(List<Long> ids, Pageable pageable);
 }

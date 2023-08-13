@@ -37,7 +37,7 @@ interface EventRepositoryImpl extends EventRepository, JpaRepository<Event, Long
 
     @Override
     @NonNull
-    default Event getById(@NonNull Long eventId) {
+    default Event getEventById(@NonNull Long eventId) {
         return findById(eventId)
                 .orElseThrow(() -> new NotFoundException(String.format("Событие c идентификатором %1$s не найдено", eventId)));
     }

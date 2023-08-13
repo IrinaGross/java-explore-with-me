@@ -19,9 +19,9 @@ class UserServiceImpl implements UserService {
     @NotNull
     public List<User> getAllUsers(@Nullable List<Long> ids, @NotNull Pageable pageable) {
         if (ids == null) {
-            return userRepository.getAllUsers(pageable);
+            return userRepository.findAll(pageable);
         } else {
-            return userRepository.getAllUsers(ids, pageable);
+            return userRepository.findAllByIdIn(ids, pageable);
         }
     }
 

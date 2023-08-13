@@ -65,7 +65,7 @@ class EventServiceImpl implements EventService {
             @Nullable Long categoryId,
             @NonNull Event event
     ) {
-        var current = eventRepository.getById(eventId);
+        var current = eventRepository.getEventById(eventId);
         // TODO дата начала изменяемого события должна быть не ранее чем за час от даты публикации. (Ожидается код ошибки 409)
         var currentState = current.getState();
         var newState = event.getState();
@@ -81,7 +81,7 @@ class EventServiceImpl implements EventService {
     @Override
     @NotNull
     public Event getEvent(@NotNull Long eventId) {
-        var event = eventRepository.getById(eventId);
+        var event = eventRepository.getEventById(eventId);
         if (event.getState() != EventState.PUBLISHED) {
             throw new NotFoundException(String.format("Событие c идентификатором %1$s не опубликовано", eventId));
         }
@@ -130,7 +130,7 @@ class EventServiceImpl implements EventService {
     @Override
     @NotNull
     public Event getEvent(@NotNull Long userId, @NotNull Long eventId) {
-        var event = eventRepository.getById(eventId);
+        var event = eventRepository.getEventById(eventId);
         if (!Objects.equals(event.getInitiator().getId(), userId)) {
             throw new NotFoundException(String.format("Событие c идентификатором %1$s не найдено для пользователя %2$s", eventId, userId));
         }
