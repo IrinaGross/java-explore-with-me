@@ -1,27 +1,27 @@
 package ru.practicum.request.repository;
 
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.practicum.request.model.ParticipationRequest;
 
 import java.util.List;
 
 public interface ParticipationRequestRepository {
-    @NonNull
-    ParticipationRequest create(@NonNull ParticipationRequest request);
+    @NotNull
+    ParticipationRequest create(@NotNull ParticipationRequest request);
 
     @Nullable
-    ParticipationRequest findRequestBy(@NonNull Long userId, @NonNull Long eventId);
+    ParticipationRequest findRequestBy(@NotNull Long userId, @NotNull Long eventId);
 
-    @NonNull
-    ParticipationRequest getRequestById(@NonNull Long requestId);
+    @NotNull
+    ParticipationRequest getRequestById(@NotNull Long requestId);
 
-    @NonNull
-    ParticipationRequest update(@NonNull ParticipationRequest request);
+    @NotNull
+    ParticipationRequest update(@NotNull ParticipationRequest request);
 
-    @NonNull
-    List<ParticipationRequest> getRequestsByUserId(@NonNull Long userId);
+    @NotNull
+    List<ParticipationRequest> findAllByUserId(@NotNull Long userId);
 
-    @NonNull
-    List<ParticipationRequest> getRequestsByEventId(@NonNull Long eventId);
+    @NotNull
+    List<ParticipationRequest> findAllByEventId(@NotNull Long eventId);
 }

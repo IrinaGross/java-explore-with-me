@@ -1,24 +1,24 @@
 package ru.practicum.compilation.repository;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import ru.practicum.compilation.model.Compilation;
 
 import java.util.List;
 
 public interface CompilationRepository {
-    @NonNull
-    Compilation add(@NonNull Compilation compilation);
+    @NotNull
+    Compilation add(@NotNull Compilation compilation);
 
-    void delete(@NonNull Long compilationId);
+    void delete(@NotNull Long compilationId);
 
-    @NonNull
-    Compilation getCompilationById(@NonNull Long compilationId);
+    @NotNull
+    Compilation getCompilationById(@NotNull Long compilationId);
 
-    @NonNull
-    Compilation update(@NonNull Compilation compilation);
+    @NotNull
+    Compilation update(@NotNull Compilation compilation);
 
-    @NonNull
-    List<Compilation> getAll(@Nullable Boolean pinned, @NonNull Pageable pageable);
+    @NotNull
+    List<Compilation> getAll(@Nullable Boolean pinned, @NotNull Pageable pageable);
 }

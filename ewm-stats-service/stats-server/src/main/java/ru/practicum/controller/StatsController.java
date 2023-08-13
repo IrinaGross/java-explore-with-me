@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static ru.practicum.Utils.checkDates;
+
 @Validated
 @RestController
 @RequestMapping
@@ -49,9 +51,7 @@ public class StatsController {
             @RequestParam(name = URIS_REQUEST_PARAM, required = false) @Nullable List<String> uris,
             @RequestParam(name = UNIQUE_REQUEST_PARAM, required = false, defaultValue = "false") @NonNull Boolean unique
     ) {
-        if (start.isAfter(end)) {
-            throw new BadRequestException("Дата начала не может быть больше даты окончания");
-        }
+        checkDates(start, end);
         var list = uris == null ? Collections.<String>emptyList() : uris;
         return service.getStatistics(start, end, list, unique)
                 .stream()

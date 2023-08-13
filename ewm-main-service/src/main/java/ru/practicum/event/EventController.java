@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ru.practicum.Const.*;
+import static ru.practicum.Utils.checkDates;
 import static ru.practicum.configuration.JacksonConfiguration.DATE_PATTERN;
 
 @Validated
@@ -138,6 +139,7 @@ public class EventController {
             @RequestParam(name = SIZE_PARAM, required = false, defaultValue = SIZE_DEFAULT) @NonNull Integer size,
             HttpServletRequest request
     ) {
+        checkDates(rangeStart, rangeEnd);
         addStatisticsRecord(request);
         return service.getAll(query, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, Utils.newPage(from, size)).stream()
                 .map(mapper::mapToShort)

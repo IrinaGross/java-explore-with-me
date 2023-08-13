@@ -1,24 +1,24 @@
 package ru.practicum.user.repository;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.NonNull;
 import ru.practicum.user.model.User;
 
 import java.util.List;
 
 public interface UserRepository {
 
-    @NonNull
-    List<User> findAll(@NonNull Pageable pageable);
+    @NotNull
+    List<User> findAll(@NotNull Pageable pageable);
 
-    @NonNull
-    List<User> findAllByIdIn(@NonNull List<Long> ids, @NonNull Pageable pageable);
+    @NotNull
+    List<User> findAllByIdIn(@NotNull List<Long> ids, @NotNull Pageable pageable);
 
-    @NonNull
-    User createUser(@NonNull User user);
+    @NotNull
+    User createUser(@NotNull User user);
 
-    @NonNull
-    User getById(@NonNull Long userId);
+    @NotNull
+    User getById(@NotNull Long userId);
 
-    void deleteUser(@NonNull Long userId);
+    void deleteUser(@NotNull Long userId);
 }

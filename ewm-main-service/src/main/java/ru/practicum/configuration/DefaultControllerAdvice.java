@@ -1,4 +1,4 @@
-package ru.practicum.exception.controller;
+package ru.practicum.configuration;
 
 import lombok.NonNull;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
 
@@ -26,7 +27,7 @@ public class DefaultControllerAdvice {
     private static final String BAD_REQUEST_REASON = "Incorrectly made request.";
     private static final String NOT_FOUND_REASON = "The required object was not found.";
 
-    @ExceptionHandler({ConstraintViolationException.class})
+    @ExceptionHandler({ConstraintViolationException.class, BadRequestException.class})
     public ResponseEntity<Object> handleBadRequestException(RuntimeException ex) {
         return ResponseEntity.badRequest().body(getCustomBody(ex, BAD_REQUEST_STATUS, BAD_REQUEST_REASON));
     }

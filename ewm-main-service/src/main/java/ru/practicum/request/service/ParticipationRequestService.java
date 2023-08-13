@@ -1,29 +1,29 @@
 package ru.practicum.request.service;
 
-import org.springframework.lang.NonNull;
+import org.jetbrains.annotations.NotNull;
 import ru.practicum.request.model.ParticipationRequest;
 import ru.practicum.request.model.RequestStatus;
 
 import java.util.List;
 
 public interface ParticipationRequestService {
-    @NonNull
-    ParticipationRequest createParticipationRequest(@NonNull Long userId, @NonNull Long eventId);
+    @NotNull
+    ParticipationRequest createParticipationRequest(@NotNull Long userId, @NotNull Long eventId);
 
-    @NonNull
-    ParticipationRequest cancelParticipationRequest(@NonNull Long userId, @NonNull Long requestId);
+    @NotNull
+    ParticipationRequest cancelParticipationRequest(@NotNull Long userId, @NotNull Long requestId);
 
-    @NonNull
-    List<ParticipationRequest> getRequestsByUser(@NonNull Long userId);
+    @NotNull
+    List<ParticipationRequest> getRequestsByUser(@NotNull Long userId);
 
-    @NonNull
+    @NotNull
     List<ParticipationRequest> updateRequestsStatuses(
-            @NonNull Long userId,
-            @NonNull Long eventId,
-            @NonNull List<Long> requestIds,
-            @NonNull RequestStatus status
+            @NotNull Long userId,
+            @NotNull Long eventId,
+            @NotNull List<Long> requestIds,
+            @NotNull RequestStatus status
     );
 
-    @NonNull
-    List<ParticipationRequest> getRequestsForEvent(@NonNull Long userId, @NonNull Long eventId);
+    @NotNull
+    List<ParticipationRequest> getRequestsForEvent(@NotNull Long userId, @NotNull Long eventId);
 }

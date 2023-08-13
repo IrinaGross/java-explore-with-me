@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import ru.practicum.category.repository.CategoryRepository;
 import ru.practicum.event.model.Event;
@@ -35,18 +34,14 @@ class EventServiceImpl implements EventService {
             @Nullable List<Long> categories,
             @Nullable LocalDateTime rangeStart,
             @Nullable LocalDateTime rangeEnd,
-            @NotNull Pageable pageable) {
+            @NotNull Pageable pageable
+    ) {
         return eventRepository.searchEvents(users, states, categories, rangeStart, rangeEnd, pageable);
     }
 
     @Override
     @NotNull
-    public Event updateEvent(
-            @NonNull Long userId,
-            @NonNull Long eventId,
-            @Nullable Long categoryId,
-            @NonNull Event event
-    ) {
+    public Event updateEvent(@NotNull Long userId, @NotNull Long eventId, @Nullable Long categoryId, @NotNull Event event) {
         checkEventDate(event);
         var current = getEvent(userId, eventId);
         switch (current.getState()) {
@@ -60,11 +55,7 @@ class EventServiceImpl implements EventService {
 
     @Override
     @NotNull
-    public Event updateEvent(
-            @NonNull Long eventId,
-            @Nullable Long categoryId,
-            @NonNull Event event
-    ) {
+    public Event updateEvent(@NotNull Long eventId, @Nullable Long categoryId, @NotNull Event event) {
         var current = eventRepository.getEventById(eventId);
         // TODO дата начала изменяемого события должна быть не ранее чем за час от даты публикации. (Ожидается код ошибки 409)
         var currentState = current.getState();
@@ -144,8 +135,8 @@ class EventServiceImpl implements EventService {
         }
     }
 
-    @NonNull
-    private Event updateInternal(@Nullable Long categoryId, @NonNull Event current, @NonNull Event event) {
+    @NotNull
+    private Event updateInternal(@Nullable Long categoryId, @NotNull Event current, @NotNull Event event) {
         var newTitle = event.getTitle();
         var newAnnotation = event.getAnnotation();
         var newDescription = event.getDescription();

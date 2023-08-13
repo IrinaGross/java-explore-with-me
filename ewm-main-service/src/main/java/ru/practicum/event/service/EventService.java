@@ -1,8 +1,8 @@
 package ru.practicum.event.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.model.SortType;
 
@@ -10,35 +10,35 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EventService {
-    @NonNull
+    @NotNull
     List<Event> searchEvents(
             @Nullable List<Long> users,
             @Nullable List<String> states,
             @Nullable List<Long> categories,
             @Nullable LocalDateTime rangeStart,
             @Nullable LocalDateTime rangeEnd,
-            @NonNull Pageable pageable
+            @NotNull Pageable pageable
     );
 
-    @NonNull
+    @NotNull
     Event updateEvent(
-            @NonNull Long userId,
-            @NonNull Long eventId,
+            @NotNull Long userId,
+            @NotNull Long eventId,
             @Nullable Long categoryId,
-            @NonNull Event event
+            @NotNull Event event
     );
 
-    @NonNull
+    @NotNull
     Event updateEvent(
-            @NonNull Long eventId,
+            @NotNull Long eventId,
             @Nullable Long categoryId,
-            @NonNull Event event
+            @NotNull Event event
     );
 
-    @NonNull
-    Event getEvent(@NonNull Long eventId);
+    @NotNull
+    Event getEvent(@NotNull Long eventId);
 
-    @NonNull
+    @NotNull
     List<Event> getAll(
             @Nullable String query,
             @Nullable List<Long> categories,
@@ -47,14 +47,14 @@ public interface EventService {
             @Nullable LocalDateTime rangeEnd,
             @Nullable Boolean onlyAvailable,
             @Nullable SortType sort,
-            @NonNull Pageable pageable);
+            @NotNull Pageable pageable);
 
-    @NonNull
-    List<Event> getUserEvents(@NonNull Long userId, @NonNull Pageable pageable);
+    @NotNull
+    List<Event> getUserEvents(@NotNull Long userId, @NotNull Pageable pageable);
 
-    @NonNull
-    Event addEvent(@NonNull Long userId, @NonNull Long categoryId, @NonNull Event event);
+    @NotNull
+    Event addEvent(@NotNull Long userId, @NotNull Long categoryId, @NotNull Event event);
 
-    @NonNull
-    Event getEvent(@NonNull Long userId, @NonNull Long eventId);
+    @NotNull
+    Event getEvent(@NotNull Long userId, @NotNull Long eventId);
 }
