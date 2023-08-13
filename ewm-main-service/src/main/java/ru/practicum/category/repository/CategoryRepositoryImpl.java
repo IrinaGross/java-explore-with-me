@@ -31,7 +31,11 @@ interface CategoryRepositoryImpl extends CategoryRepository, JpaRepository<Categ
     @Override
     @NotNull
     default Category update(@NotNull Category category) {
-        return save(category);
+        try {
+            return save(category);
+        } catch (DataIntegrityViolationException e) {
+            throw new ConflictException(String.format("Категория с наименованием %1$s уже существует", category.getName()));
+        }
     }
 
     @Override
