@@ -66,6 +66,10 @@ public class Event {
     @Column(name = "event_published_date")
     private LocalDateTime publishedOn;
 
+    @Nullable
+    @Column(name = "event_view_count", nullable = false)
+    private Long viewCount;
+
     @ManyToOne
     @JoinColumn(name = "event_category_id", nullable = false)
     private Category category;

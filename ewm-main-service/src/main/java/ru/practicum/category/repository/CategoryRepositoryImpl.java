@@ -46,7 +46,7 @@ interface CategoryRepositoryImpl extends CategoryRepository, JpaRepository<Categ
 
     @Override
     @NotNull
-    default Category getById(@NotNull Long categoryId) {
+    default Category getCategoryById(@NotNull Long categoryId) {
         return findById(categoryId)
                 .orElseThrow(() -> new NotFoundException(String.format("Категория с идентификатором %1$s не найдена", categoryId)));
     }

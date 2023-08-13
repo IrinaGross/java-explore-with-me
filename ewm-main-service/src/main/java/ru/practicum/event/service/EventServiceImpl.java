@@ -115,7 +115,7 @@ class EventServiceImpl implements EventService {
         checkEventDate(event);
         LocalDateTime now = LocalDateTime.now();
         var user = userRepository.getById(userId);
-        var category = categoryRepository.getById(categoryId);
+        var category = categoryRepository.getCategoryById(categoryId);
         return eventRepository.add(
                 event.toBuilder()
                         .createdAt(now)
@@ -123,6 +123,7 @@ class EventServiceImpl implements EventService {
                         .state(EventState.PENDING)
                         .initiator(user)
                         .requests(Collections.emptyList())
+                        .viewCount(0L)
                         .build()
         );
     }
@@ -167,7 +168,7 @@ class EventServiceImpl implements EventService {
                         .paid(newPaid == null ? current.getPaid() : newPaid)
                         .state(newState == null ? current.getState() : newState)
                         .needModerationRequests(newNeedModeration == null ? current.getNeedModerationRequests() : newNeedModeration)
-                        .category(categoryId == null ? current.getCategory() : categoryRepository.getById(categoryId))
+                        .category(categoryId == null ? current.getCategory() : categoryRepository.getCategoryById(categoryId))
                         .publishedOn(newState == EventState.PUBLISHED ? LocalDateTime.now() : current.getPublishedOn())
                         .build()
         );

@@ -32,7 +32,7 @@ public class DefaultControllerAdvice {
     }
 
     @ExceptionHandler({ConflictException.class, DataIntegrityViolationException.class})
-    public ResponseEntity<Object> handleConflictException(ConflictException ex) {
+    public ResponseEntity<Object> handleConflictException(RuntimeException ex) {
         return new ResponseEntity<>(getCustomBody(ex, CONFLICT_STATUS, CONFLICT_REASON), HttpStatus.CONFLICT);
     }
 
