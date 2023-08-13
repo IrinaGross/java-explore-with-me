@@ -46,5 +46,5 @@ public interface EventRepository {
     );
 
     @NonNull
-    List<Event> findAllByIdIn(@NonNull Set<Long> ids);
+    List<Event> findAllByInitiatorId(@NonNull Set<Long> ids);
 }

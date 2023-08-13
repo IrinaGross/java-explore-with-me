@@ -31,12 +31,6 @@ interface EventRepositoryImpl extends EventRepository, JpaRepository<Event, Long
 
     @Override
     @NonNull
-    default List<Event> getUserEvents(@NonNull Long userId, @NonNull Pageable pageable) {
-        return findAllByInitiatorId(userId, pageable);
-    }
-
-    @Override
-    @NonNull
     default Event getEventById(@NonNull Long eventId) {
         return findById(eventId)
                 .orElseThrow(() -> new NotFoundException(String.format("Событие c идентификатором %1$s не найдено", eventId)));
@@ -77,6 +71,4 @@ interface EventRepositoryImpl extends EventRepository, JpaRepository<Event, Long
         //TODO реализовать
         return Collections.emptyList();
     }
-
-    List<Event> findAllByInitiatorId(Long userId, Pageable pageable);
 }
