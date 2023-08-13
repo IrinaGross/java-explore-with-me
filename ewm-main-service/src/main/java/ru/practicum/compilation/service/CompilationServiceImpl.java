@@ -32,7 +32,7 @@ class CompilationServiceImpl implements CompilationService {
     public Compilation createCompilation(@NotNull Compilation model, @Nullable Set<Long> eventIds) {
         var events = Collections.<Event>emptyList();
         if (eventIds != null) {
-            events = eventRepository.findAllByIdIn(eventIds);
+            events = eventRepository.findAllByInitiatorId(eventIds);
         }
         return compilationRepository.add(
                 model.toBuilder()
@@ -47,7 +47,7 @@ class CompilationServiceImpl implements CompilationService {
         var current = compilationRepository.getCompilationById(compilationId);
         var builder = current.toBuilder();
         if (eventIds != null) {
-            builder.events(eventRepository.findAllByIdIn(eventIds));
+            builder.events(eventRepository.findAllByInitiatorId(eventIds));
         }
         var newTitle = compilation.getTitle();
         var newPinned = compilation.getPinned();
