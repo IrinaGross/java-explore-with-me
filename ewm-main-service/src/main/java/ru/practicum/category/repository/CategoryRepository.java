@@ -17,7 +17,7 @@ public interface CategoryRepository {
     List<Category> getAll(@NotNull Pageable pageable);
 
     @NonNull
-    Category getById(@NotNull Long categoryId);
+    Category getCategoryById(@NotNull Long categoryId);
 
     @NonNull
     Category update(@NotNull Category category);

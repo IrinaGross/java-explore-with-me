@@ -7,12 +7,15 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.HitRequestDto;
 import ru.practicum.Utils;
 import ru.practicum.event.dto.*;
 import ru.practicum.event.mapper.EventMapper;
 import ru.practicum.event.model.SortType;
 import ru.practicum.event.service.EventService;
+import ru.practicum.service.EWMClientService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +34,7 @@ public class EventController {
     private static final String RANGE_END_PARAM = "rangeEnd";
 
     private final EventService service;
+    private final EWMClientService statsService;
     private final EventMapper mapper;
 
     // Admin
@@ -131,8 +135,10 @@ public class EventController {
             @RequestParam(name = "onlyAvailable", required = false, defaultValue = "false") @NonNull Boolean onlyAvailable,
             @RequestParam(name = "sort", required = false) @Nullable SortType sort,
             @RequestParam(name = FROM_PARAM, required = false, defaultValue = FROM_DEFAULT) @NonNull Integer from,
-            @RequestParam(name = SIZE_PARAM, required = false, defaultValue = SIZE_DEFAULT) @NonNull Integer size
+            @RequestParam(name = SIZE_PARAM, required = false, defaultValue = SIZE_DEFAULT) @NonNull Integer size,
+            HttpServletRequest request
     ) {
+        addStatisticsRecord(request);
         return service.getAll(query, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, Utils.newPage(from, size)).stream()
                 .map(mapper::mapToShort)
                 .collect(Collectors.toList());
@@ -140,11 +146,24 @@ public class EventController {
 
     @GetMapping("/events/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EventFullDto getEvent(@PathVariable(name = "id") @NonNull Long eventId) {
+    public EventFullDto getEvent(@PathVariable(name = "id") @NonNull Long eventId, HttpServletRequest request) {
+        // todo Значение поля views должно увеличится на 1 после выполнения GET запроса с уникального IP к событию
+        addStatisticsRecord(request);
         return Optional.of(eventId)
                 .map(service::getEvent)
                 .map(it -> Objects.requireNonNull(mapper.mapToFull(it)))
                 .get();
     }
     // End public
+
+    private void addStatisticsRecord(HttpServletRequest request) {
+        statsService.addStatisticRecord(
+                HitRequestDto.builder()
+                        .app("ewm-main-service")
+                        .uri(request.getRequestURI())
+                        .ip(request.getRemoteAddr())
+                        .timestamp(LocalDateTime.now())
+                        .build()
+        );
+    }
 }

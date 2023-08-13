@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS events(
     event_need_moderation_requests BOOLEAN NOT NULL,
     event_state event_state_enum NOT NULL,
     event_published_date TIMESTAMP,
+    event_view_count BIGINT NOT NULL,
     event_initiator_id BIGINT NOT NULL,
     event_category_id BIGINT NOT NULL,
     CONSTRAINT PK_EVENTS PRIMARY KEY (event_id),

@@ -23,7 +23,7 @@ class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(@NotNull Long categoryId) {
-        var category = categoryRepository.getById(categoryId);
+        var category = categoryRepository.getCategoryById(categoryId);
         if (!category.getEvents().isEmpty()) {
             throw new ConflictException(String.format("Для категории с идентификатором %1$s есть связанные события", categoryId));
         }
@@ -33,7 +33,7 @@ class CategoryServiceImpl implements CategoryService {
     @Override
     @NotNull
     public Category updateCategory(@NotNull Long categoryId, @NotNull Category category) {
-        var current = categoryRepository.getById(categoryId);
+        var current = categoryRepository.getCategoryById(categoryId);
         var updated = current.toBuilder().name(category.getName()).build();
         return categoryRepository.update(updated);
     }
@@ -47,6 +47,6 @@ class CategoryServiceImpl implements CategoryService {
     @Override
     @NotNull
     public Category getCategory(@NotNull Long categoryId) {
-        return categoryRepository.getById(categoryId);
+        return categoryRepository.getCategoryById(categoryId);
     }
 }

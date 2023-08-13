@@ -2,13 +2,15 @@ package ru.practicum.controller;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.HitRequestDto;
 import ru.practicum.ViewResponseDto;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.mapper.HitMapper;
 import ru.practicum.mapper.ViewMapper;
 import ru.practicum.service.StatsService;
@@ -35,6 +37,7 @@ public class StatsController {
     private final ViewMapper viewMapper;
 
     @PostMapping("/hit")
+    @ResponseStatus(HttpStatus.CREATED)
     public void addStatisticRecord(@RequestBody @NonNull HitRequestDto hitRequestDto) {
         service.addStatisticRecord(Objects.requireNonNull(hitMapper.map(hitRequestDto)));
     }
@@ -46,10 +49,18 @@ public class StatsController {
             @RequestParam(name = URIS_REQUEST_PARAM, required = false) @Nullable List<String> uris,
             @RequestParam(name = UNIQUE_REQUEST_PARAM, required = false, defaultValue = "false") @NonNull Boolean unique
     ) {
-        val list = uris == null ? Collections.<String>emptyList() : uris;
+        if (start.isAfter(end)) {
+            throw new BadRequestException("Дата начала не может быть больше даты окончания");
+        }
+        var list = uris == null ? Collections.<String>emptyList() : uris;
         return service.getStatistics(start, end, list, unique)
                 .stream()
                 .map(viewMapper::map)
                 .collect(Collectors.toList());
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Object> handleBadRequestException(BadRequestException ex) {
+        return ResponseEntity.badRequest().build();
     }
 }

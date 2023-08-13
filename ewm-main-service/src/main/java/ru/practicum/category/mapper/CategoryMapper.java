@@ -14,6 +14,7 @@ public interface CategoryMapper {
     @Nullable
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", expression = "java(Objects.requireNonNull(dto.getName()))")
+    @Mapping(target = "events", ignore = true)
     Category map(@Nullable NewCategoryDto dto);
 
     @Nullable

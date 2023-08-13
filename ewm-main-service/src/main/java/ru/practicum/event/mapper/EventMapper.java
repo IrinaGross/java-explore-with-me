@@ -20,34 +20,34 @@ public abstract class EventMapper {
     protected CategoryMapper categoryMapper;
 
     @Nullable
-    @Mapping(target = "id", expression = "java(Objects.requireNonNull(model.getId()))")
-    @Mapping(target = "annotation", expression = "java(Objects.requireNonNull(model.getAnnotation()))")
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "annotation", source = "annotation")
     @Mapping(target = "category", expression = "java(Objects.requireNonNull(categoryMapper.map(model.getCategory())))")
     @Mapping(target = "confirmedRequests", expression = "java((long)model.getConfirmedRequests().size())")
-    @Mapping(target = "createdOn", expression = "java(Objects.requireNonNull(model.getCreatedAt()))")
-    @Mapping(target = "description", expression = "java(Objects.requireNonNull(model.getDescription()))")
-    @Mapping(target = "eventDate", expression = "java(Objects.requireNonNull(model.getEventDate()))")
+    @Mapping(target = "createdOn", source = "createdAt")
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "eventDate", source = "eventDate")
     @Mapping(target = "initiator", expression = "java(Objects.requireNonNull(userMapper.mapToShort(model.getInitiator())))")
     @Mapping(target = "location", expression = "java(toLocationDto(model.getLat(), model.getLon()))")
-    @Mapping(target = "paid", expression = "java(Objects.requireNonNull(model.getPaid()))")
-    @Mapping(target = "participantLimit", expression = "java(Objects.requireNonNull(model.getLimit()))")
+    @Mapping(target = "paid", source = "paid")
+    @Mapping(target = "participantLimit", source = "limit")
     @Mapping(target = "requestModeration", source = "needModerationRequests")
-    @Mapping(target = "state", expression = "java(Objects.requireNonNull(model.getState()))")
+    @Mapping(target = "state", source = "state")
     @Mapping(target = "publishedOn", source = "publishedOn")
-    @Mapping(target = "title", expression = "java(Objects.requireNonNull(model.getTitle()))")
-    @Mapping(target = "views", expression = "java(0L)") // todo Значение поля views должно увеличится на 1 после выполнения GET запроса с уникального IP к событию
+    @Mapping(target = "title", source = "title")
+    @Mapping(target = "views", source = "viewCount")
     public abstract EventFullDto mapToFull(@Nullable Event model);
 
     @Nullable
-    @Mapping(target = "id", expression = "java(Objects.requireNonNull(model.getId()))")
-    @Mapping(target = "annotation", expression = "java(Objects.requireNonNull(model.getAnnotation()))")
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "annotation", source = "annotation")
     @Mapping(target = "category", expression = "java(Objects.requireNonNull(categoryMapper.map(model.getCategory())))")
     @Mapping(target = "confirmedRequests", expression = "java((long)model.getConfirmedRequests().size())")
-    @Mapping(target = "eventDate", expression = "java(Objects.requireNonNull(model.getEventDate()))")
+    @Mapping(target = "eventDate", source = "eventDate")
     @Mapping(target = "initiator", expression = "java(Objects.requireNonNull(userMapper.mapToShort(model.getInitiator())))")
-    @Mapping(target = "paid", expression = "java(Objects.requireNonNull(model.getPaid()))")
-    @Mapping(target = "title", expression = "java(Objects.requireNonNull(model.getTitle()))")
-    @Mapping(target = "views", expression = "java(0L)") // todo Значение поля views должно увеличится на 1 после выполнения GET запроса с уникального IP к событию
+    @Mapping(target = "paid", source = "paid")
+    @Mapping(target = "title", source = "title")
+    @Mapping(target = "views", source = "viewCount")
     public abstract EventShortDto mapToShort(@Nullable Event model);
 
     @Nullable
@@ -67,6 +67,7 @@ public abstract class EventMapper {
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "initiator", ignore = true)
     @Mapping(target = "requests", ignore = true)
+    @Mapping(target = "viewCount", ignore = true)
     public abstract Event map(@Nullable UpdateEventAdminRequest dto);
 
     @Nullable
@@ -86,6 +87,7 @@ public abstract class EventMapper {
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "initiator", ignore = true)
     @Mapping(target = "requests", ignore = true)
+    @Mapping(target = "viewCount", ignore = true)
     public abstract Event map(@Nullable UpdateEventUserRequest dto);
 
     @Nullable
@@ -105,6 +107,7 @@ public abstract class EventMapper {
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "initiator", ignore = true)
     @Mapping(target = "requests", ignore = true)
+    @Mapping(target = "viewCount", ignore = true)
     public abstract Event map(@Nullable NewEventDto dto);
 
     protected LocationDto toLocationDto(Float lat, Float lon) {
