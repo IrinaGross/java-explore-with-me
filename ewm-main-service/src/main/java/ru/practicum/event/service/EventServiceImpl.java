@@ -13,7 +13,7 @@ import ru.practicum.event.repository.CustomEventRepository;
 import ru.practicum.event.repository.EventRepository;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
-import ru.practicum.statistics.StatisticsRepository;
+import ru.practicum.statistics.repository.StatisticsRepository;
 import ru.practicum.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
