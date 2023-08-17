@@ -1,4 +1,4 @@
-package ru.practicum.statistics;
+package ru.practicum.statistics.repository;
 
 import org.jetbrains.annotations.NotNull;
 import ru.practicum.event.model.Event;

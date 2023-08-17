@@ -1,4 +1,4 @@
-package ru.practicum.statistics;
+package ru.practicum.statistics.repository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
