@@ -22,26 +22,4 @@ public interface EventRepository {
 
     @NotNull
     List<Event> findAllByInitiatorId(@NotNull Long userId, @NotNull Pageable pageable);
-
-//    @NotNull
-//    List<Event> searchEvents(
-//            @Nullable List<Long> users,
-//            @Nullable List<EventState> states,
-//            @Nullable List<Long> categories,
-//            @Nullable LocalDateTime rangeStart,
-//            @Nullable LocalDateTime rangeEnd,
-//            @NotNull Pageable pageable
-//    );
-//
-//    @NotNull
-//    List<Event> getEvents(
-//            @Nullable String query,
-//            @Nullable List<Long> categories,
-//            @Nullable Boolean paid,
-//            @Nullable LocalDateTime rangeStart,
-//            @Nullable LocalDateTime rangeEnd,
-//            @Nullable Boolean onlyAvailable,
-//            @Nullable SortType sort,
-//            @NotNull Pageable pageable
-//    );
 }
