@@ -8,19 +8,17 @@ import ru.practicum.category.mapper.CategoryMapper;
 import ru.practicum.event.dto.*;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.model.EventState;
-import ru.practicum.statistics.StatisticsRepository;
 import ru.practicum.user.mapper.UserMapper;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Mapper(componentModel = "spring", imports = {Objects.class})
+@Mapper(componentModel = "spring", imports = {Objects.class, LocalDateTime.class})
 public abstract class EventMapper {
     @Autowired
     protected UserMapper userMapper;
     @Autowired
     protected CategoryMapper categoryMapper;
-    @Autowired
-    protected StatisticsRepository statisticsRepository;
 
     @Nullable
     @Mapping(target = "id", source = "id")
@@ -38,7 +36,7 @@ public abstract class EventMapper {
     @Mapping(target = "state", source = "state")
     @Mapping(target = "publishedOn", source = "publishedOn")
     @Mapping(target = "title", source = "title")
-    @Mapping(target = "views", expression = "java(statisticsRepository.getViewCount(model))")
+    @Mapping(target = "views", source = "viewCount")
     public abstract EventFullDto mapToFull(@Nullable Event model);
 
     @Nullable
@@ -50,7 +48,7 @@ public abstract class EventMapper {
     @Mapping(target = "initiator", expression = "java(Objects.requireNonNull(userMapper.mapToShort(model.getInitiator())))")
     @Mapping(target = "paid", source = "paid")
     @Mapping(target = "title", source = "title")
-    @Mapping(target = "views", expression = "java(statisticsRepository.getViewCount(model))")
+    @Mapping(target = "views", source = "viewCount")
     public abstract EventShortDto mapToShort(@Nullable Event model);
 
     @Nullable
@@ -66,7 +64,8 @@ public abstract class EventMapper {
     @Mapping(target = "paid", source = "paid")
     @Mapping(target = "needModerationRequests", source = "requestModeration")
     @Mapping(target = "state", expression = "java(form(dto.getStateAction()))")
-    @Mapping(target = "publishedOn", ignore = true)
+    @Mapping(target = "publishedOn", expression = "java(LocalDateTime.now())")
+    @Mapping(target = "viewCount", ignore = true)
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "initiator", ignore = true)
     @Mapping(target = "requests", ignore = true)
@@ -87,6 +86,7 @@ public abstract class EventMapper {
     @Mapping(target = "needModerationRequests", source = "requestModeration")
     @Mapping(target = "state", expression = "java(form(dto.getStateAction()))")
     @Mapping(target = "publishedOn", ignore = true)
+    @Mapping(target = "viewCount", ignore = true)
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "initiator", ignore = true)
     @Mapping(target = "requests", ignore = true)
@@ -107,6 +107,7 @@ public abstract class EventMapper {
     @Mapping(target = "needModerationRequests", source = "requestModeration")
     @Mapping(target = "state", ignore = true)
     @Mapping(target = "publishedOn", ignore = true)
+    @Mapping(target = "viewCount", ignore = true)
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "initiator", ignore = true)
     @Mapping(target = "requests", ignore = true)

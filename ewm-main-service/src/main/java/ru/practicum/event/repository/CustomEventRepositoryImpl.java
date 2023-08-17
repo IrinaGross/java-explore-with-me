@@ -100,7 +100,7 @@ class CustomEventRepositoryImpl implements CustomEventRepository {
                         cq.orderBy(cb.desc(root.get(Event_.eventDate)));
                         break;
                     case VIEWS:
-                        // TODO реализовать
+                        cq.orderBy(cb.desc(root.get(Event_.viewCount)));
                         break;
                 }
             }

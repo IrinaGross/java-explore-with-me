@@ -19,7 +19,9 @@ import ru.practicum.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,9 +63,11 @@ class EventServiceImpl implements EventService {
     @NotNull
     public Event updateEvent(@NotNull Long eventId, @Nullable Long categoryId, @NotNull Event event) {
         var current = eventRepository.getEventById(eventId);
-        // TODO дата начала изменяемого события должна быть не ранее чем за час от даты публикации. (Ожидается код ошибки 409)
         var currentState = current.getState();
         var newState = event.getState();
+        if (newState == EventState.PUBLISHED && current.getEventDate().isBefore(event.getPublishedOn().plusHours(1))) {
+            throw new ConflictException("Дата начала изменяемого события должна быть не ранее чем за час от даты публикации");
+        }
         if (newState == EventState.PUBLISHED && currentState != EventState.PENDING) {
             throw new ConflictException("Событие можно публиковать, только если оно в состоянии ожидания публикации");
         }
@@ -80,7 +84,8 @@ class EventServiceImpl implements EventService {
         if (event.getState() != EventState.PUBLISHED) {
             throw new NotFoundException(String.format("Событие c идентификатором %1$s не опубликовано", eventId));
         }
-        return event;
+        Map<Long, Long> viewCount = statisticsRepository.getViewCount(List.of(event));
+        return updateInternal(null, event, event.toBuilder().viewCount(viewCount.get(eventId)).build());
     }
 
     @Override
@@ -95,7 +100,11 @@ class EventServiceImpl implements EventService {
             @Nullable SortType sort,
             @NotNull Pageable newPage
     ) {
-        return customEventRepository.getEvents(query, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, newPage);
+        var events = customEventRepository.getEvents(query, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, newPage);
+        var viewCount = statisticsRepository.getViewCount(events);
+        return events.stream()
+                .map(it -> updateInternal(null, it, it.toBuilder().viewCount(viewCount.get(it.getId())).build()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -118,6 +127,7 @@ class EventServiceImpl implements EventService {
                         .state(EventState.PENDING)
                         .initiator(user)
                         .requests(Collections.emptyList())
+                        .viewCount(0L)
                         .build()
         );
     }
@@ -149,6 +159,7 @@ class EventServiceImpl implements EventService {
         var newPaid = event.getPaid();
         var newNeedModeration = event.getNeedModerationRequests();
         var newState = event.getState();
+        var newViewCount = event.getViewCount();
         return eventRepository.update(
                 current.toBuilder()
                         .title(newTitle == null ? current.getTitle() : newTitle)
@@ -160,9 +171,10 @@ class EventServiceImpl implements EventService {
                         .limit(newLimit == null ? current.getLimit() : newLimit)
                         .paid(newPaid == null ? current.getPaid() : newPaid)
                         .state(newState == null ? current.getState() : newState)
+                        .viewCount(newViewCount == null ? current.getViewCount() : newViewCount)
                         .needModerationRequests(newNeedModeration == null ? current.getNeedModerationRequests() : newNeedModeration)
                         .category(categoryId == null ? current.getCategory() : categoryRepository.getCategoryById(categoryId))
-                        .publishedOn(newState == EventState.PUBLISHED ? LocalDateTime.now() : current.getPublishedOn())
+                        .publishedOn(newState == EventState.PUBLISHED ? event.getPublishedOn() : current.getPublishedOn())
                         .build()
         );
     }

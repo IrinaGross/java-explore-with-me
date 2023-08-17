@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
 import ru.practicum.category.model.Category;
 import ru.practicum.compilation.model.Compilation;
 import ru.practicum.request.model.ParticipationRequest;
@@ -62,9 +61,11 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private EventState state;
 
-    @Nullable
     @Column(name = "event_published_date")
     private LocalDateTime publishedOn;
+
+    @Column(name = "event_view_count")
+    private Long viewCount;
 
     @ManyToOne
     @JoinColumn(name = "event_category_id", nullable = false)
