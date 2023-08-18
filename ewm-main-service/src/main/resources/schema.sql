@@ -41,6 +41,8 @@ CREATE TABLE IF NOT EXISTS events(
         ON DELETE RESTRICT
 );
 
+CREATE INDEX IF NOT EXISTS event_initiator ON events(event_initiator_id)
+
 CREATE TYPE IF NOT EXISTS request_status_enum AS ENUM ('PENDING', 'CONFIRMED', 'REJECTED', 'CANCELED');
 
 CREATE TABLE IF NOT EXISTS requests(
