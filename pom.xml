@@ -5,7 +5,8 @@
 	<modules>
 		<module>ewm-main-service</module>
 		<module>ewm-stats-service</module>
-	</modules>
+        <module>ewm-common</module>
+    </modules>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -26,8 +27,26 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<shared-dto.version>0.0.1-SNAPSHOT</shared-dto.version>
+		<stats-client.version>0.0.1-SNAPSHOT</stats-client.version>
+		<common.version>0.0.1-SNAPSHOT</common.version>
 		<org.projectlombok.version>1.18.24</org.projectlombok.version>
+		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
 	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>20.1.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${org.projectlombok.version}</version>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<pluginManagement>
