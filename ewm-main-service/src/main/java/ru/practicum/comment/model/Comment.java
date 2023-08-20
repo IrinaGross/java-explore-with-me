@@ -28,6 +28,9 @@ public class Comment {
     @Column(name = "comment_created_date", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "comment_published_date")
+    private LocalDateTime publishedAt;
+
     @Column(name = "comment_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private CommentStatus status;

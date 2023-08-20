@@ -50,6 +50,7 @@ class CommentServiceImpl implements CommentService {
         onConflict(() -> comment.getStatus() != CommentStatus.CREATED, () -> "Нельзя модерировать опубликованное/отклоненное событие");
         return commentRepository.update(
                 comment.toBuilder()
+                        .publishedAt(status == CommentStatus.CONFIRMED ? LocalDateTime.now(): comment.getPublishedAt())
                         .status(status)
                         .build()
         );

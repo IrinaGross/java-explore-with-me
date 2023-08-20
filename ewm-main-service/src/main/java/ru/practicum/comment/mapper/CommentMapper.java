@@ -28,6 +28,7 @@ public abstract class CommentMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "text", source = "text")
     @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "publishedAt", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "author", ignore = true)
     @Mapping(target = "event", ignore = true)
@@ -37,6 +38,7 @@ public abstract class CommentMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "text", source = "text")
     @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "publishedAt", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "author", ignore = true)
     @Mapping(target = "event", ignore = true)
@@ -47,6 +49,7 @@ public abstract class CommentMapper {
     @Mapping(target = "text", source = "text")
     @Mapping(target = "createdOn", source = "createdAt")
     @Mapping(target = "status", source = "status")
+    @Mapping(target = "publishedOn", source = "publishedAt")
     @Mapping(target = "author", expression = "java(Objects.requireNonNull(userMapper.mapToShort(model.getAuthor())))")
     @Mapping(target = "event", expression = "java(Objects.requireNonNull(eventMapper.mapToShort(model.getEvent())))")
     public abstract CommentDto map(@Nullable Comment model);

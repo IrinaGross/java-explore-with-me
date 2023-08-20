@@ -16,6 +16,7 @@ public class CommentDto {
     private final Long id;
     private final String text;
     private final LocalDateTime createdOn;
+    private final LocalDateTime publishedOn;
     private final CommentStatus status;
     private final UserShortDto author;
     private final EventShortDto event;
