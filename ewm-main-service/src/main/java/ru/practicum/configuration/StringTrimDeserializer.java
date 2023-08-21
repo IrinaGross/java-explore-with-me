@@ -12,6 +12,7 @@ class StringTrimDeserializer extends StdDeserializer<String> {
         super(vc);
     }
 
+    @SuppressWarnings({"RedundantThrows", "DuplicateThrows"})
     @Override
     public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
         var text = jsonParser.getText();
