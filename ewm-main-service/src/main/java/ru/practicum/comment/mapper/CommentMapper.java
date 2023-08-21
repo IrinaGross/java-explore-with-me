@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import ru.practicum.comment.dto.CommentDto;
 import ru.practicum.comment.dto.NewCommentDto;
 import ru.practicum.comment.dto.NewCommentStatusAction;
@@ -21,6 +22,7 @@ import java.util.Objects;
 public abstract class CommentMapper {
     @Autowired
     protected UserMapper userMapper;
+    @Lazy
     @Autowired
     protected EventMapper eventMapper;
 

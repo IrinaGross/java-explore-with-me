@@ -18,11 +18,11 @@ public interface CommentRepository {
     Comment update(@NotNull Comment model);
 
     @NotNull
-    List<Comment> findAllByStatus(@NotNull CommentStatus status, @NotNull Pageable pageable);
+    List<Comment> findAllByStatusOrderByCreatedAtDesc(@NotNull CommentStatus status, @NotNull Pageable pageable);
 
     @NotNull
-    List<Comment> getAllComments(@NotNull Pageable pageable);
+    List<Comment> findAllByOrderByCreatedAtDesc(@NotNull Pageable pageable);
 
     @NotNull
-    List<Comment> findAllByAuthorIdAndStatus(@NotNull Long userId, @NotNull CommentStatus status, @NotNull Pageable pageable);
+    List<Comment> findAllByAuthorIdAndStatusOrderByCreatedAtDesc(@NotNull Long userId, @NotNull CommentStatus status, @NotNull Pageable pageable);
 }

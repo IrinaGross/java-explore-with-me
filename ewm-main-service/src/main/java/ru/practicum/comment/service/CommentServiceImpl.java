@@ -47,7 +47,7 @@ class CommentServiceImpl implements CommentService {
     public Comment moderate(@NotNull Long commentId, @NotNull CommentStatus status) {
         check(() -> status == CommentStatus.CREATED, () -> new BadRequestException("Статус CREATED не поддерживается"));
         var comment = commentRepository.getCommentById(commentId);
-        onConflict(() -> comment.getStatus() != CommentStatus.CREATED, () -> "Нельзя модерировать опубликованное/отклоненное событие");
+        onConflict(() -> comment.getStatus() != CommentStatus.CREATED, () -> "Нельзя модерировать опубликованное/отклоненное/удаленное событие");
         return commentRepository.update(
                 comment.toBuilder()
                         .publishedAt(status == CommentStatus.CONFIRMED ? LocalDateTime.now(): comment.getPublishedAt())
@@ -61,7 +61,8 @@ class CommentServiceImpl implements CommentService {
     public Comment markAsDeleted(@NotNull Long userId, @NotNull Long commentId) {
         userRepository.getById(userId);
         var comment = commentRepository.getCommentById(commentId);
-        onNotFound(() -> Objects.equals(comment.getAuthor().getId(), userId), () -> String.format("Комментарий с идентификатором %1$s не принадлежит автору с идентификатором %2$s", commentId, userId));
+        onConflict(() -> comment.getStatus() != CommentStatus.CONFIRMED, () -> "Удалять можно только опубликованный комментарий");
+        onNotFound(() -> !Objects.equals(comment.getAuthor().getId(), userId), () -> String.format("Комментарий с идентификатором %1$s не принадлежит автору с идентификатором %2$s", commentId, userId));
         return commentRepository.update(
                 comment.toBuilder()
                         .status(CommentStatus.DELETED)
@@ -74,8 +75,8 @@ class CommentServiceImpl implements CommentService {
     public Comment updateComment(@NotNull Long userId, @NotNull Long commentId, @NotNull Comment comment) {
         userRepository.getById(userId);
         var current = commentRepository.getCommentById(commentId);
-        onNotFound(() -> Objects.equals(current.getAuthor().getId(), userId), () -> String.format("Комментарий с идентификатором %1$s не принадлежит автору с идентификатором %2$s", commentId, userId));
-        onConflict(() -> current.getStatus() != CommentStatus.CONFIRMED, () -> "Изменять можно только опубликованное событие");
+        onNotFound(() -> !Objects.equals(current.getAuthor().getId(), userId), () -> String.format("Комментарий с идентификатором %1$s не принадлежит автору с идентификатором %2$s", commentId, userId));
+        onConflict(() -> current.getStatus() != CommentStatus.CONFIRMED, () -> "Изменять можно только опубликованный комментарий");
         var newText = comment.getText();
         return commentRepository.update(
                 current.toBuilder()
@@ -89,9 +90,9 @@ class CommentServiceImpl implements CommentService {
     @NotNull
     public List<Comment> getAll(@Nullable CommentStatus status, @NotNull Pageable pageable) {
         if (status != null) {
-            return commentRepository.findAllByStatus(status, pageable);
+            return commentRepository.findAllByStatusOrderByCreatedAtDesc(status, pageable);
         } else {
-            return commentRepository.getAllComments(pageable);
+            return commentRepository.findAllByOrderByCreatedAtDesc(pageable);
         }
     }
 
@@ -99,6 +100,6 @@ class CommentServiceImpl implements CommentService {
     @NotNull
     public List<Comment> getPublishedComments(@NotNull Long userId, @NotNull Pageable pageable) {
         userRepository.getById(userId);
-        return commentRepository.findAllByAuthorIdAndStatus(userId, CommentStatus.CONFIRMED, pageable);
+        return commentRepository.findAllByAuthorIdAndStatusOrderByCreatedAtDesc(userId, CommentStatus.CONFIRMED, pageable);
     }
 }
