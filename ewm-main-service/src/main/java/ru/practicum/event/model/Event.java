@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.practicum.category.model.Category;
+import ru.practicum.comment.model.Comment;
+import ru.practicum.comment.model.CommentStatus;
 import ru.practicum.compilation.model.Compilation;
 import ru.practicum.request.model.ParticipationRequest;
 import ru.practicum.request.model.RequestStatus;
@@ -81,9 +83,18 @@ public class Event {
     @ManyToMany(mappedBy = "events")
     private Collection<Compilation> compilations;
 
+    @ManyToMany(mappedBy = "event")
+    private Collection<Comment> comments;
+
     public Collection<ParticipationRequest> getConfirmedRequests() {
         return requests.stream()
                 .filter(it -> it.getStatus() == RequestStatus.CONFIRMED)
+                .collect(Collectors.toList());
+    }
+
+    public Collection<Comment> getConfirmedComments() {
+        return comments.stream()
+                .filter(it -> it.getStatus() == CommentStatus.CONFIRMED)
                 .collect(Collectors.toList());
     }
 }

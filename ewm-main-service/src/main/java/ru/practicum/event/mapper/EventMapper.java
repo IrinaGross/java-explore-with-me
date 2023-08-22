@@ -5,13 +5,17 @@ import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import ru.practicum.category.mapper.CategoryMapper;
+import ru.practicum.comment.dto.CommentDto;
+import ru.practicum.comment.mapper.CommentMapper;
 import ru.practicum.event.dto.*;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.model.EventState;
 import ru.practicum.user.mapper.UserMapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", imports = {Objects.class, LocalDateTime.class})
 public abstract class EventMapper {
@@ -19,6 +23,8 @@ public abstract class EventMapper {
     protected UserMapper userMapper;
     @Autowired
     protected CategoryMapper categoryMapper;
+    @Autowired
+    protected CommentMapper commentMapper;
 
     @Nullable
     @Mapping(target = "id", source = "id")
@@ -37,6 +43,7 @@ public abstract class EventMapper {
     @Mapping(target = "publishedOn", source = "publishedOn")
     @Mapping(target = "title", source = "title")
     @Mapping(target = "views", source = "viewCount")
+    @Mapping(target = "comments", expression = "java(mapComments(model))")
     public abstract EventFullDto mapToFull(@Nullable Event model);
 
     @Nullable
@@ -70,6 +77,7 @@ public abstract class EventMapper {
     @Mapping(target = "initiator", ignore = true)
     @Mapping(target = "requests", ignore = true)
     @Mapping(target = "compilations", ignore = true)
+    @Mapping(target = "comments", ignore = true)
     public abstract Event map(@Nullable UpdateEventAdminRequest dto);
 
     @Nullable
@@ -91,6 +99,7 @@ public abstract class EventMapper {
     @Mapping(target = "initiator", ignore = true)
     @Mapping(target = "requests", ignore = true)
     @Mapping(target = "compilations", ignore = true)
+    @Mapping(target = "comments", ignore = true)
     public abstract Event map(@Nullable UpdateEventUserRequest dto);
 
     @Nullable
@@ -112,6 +121,7 @@ public abstract class EventMapper {
     @Mapping(target = "initiator", ignore = true)
     @Mapping(target = "requests", ignore = true)
     @Mapping(target = "compilations", ignore = true)
+    @Mapping(target = "comments", ignore = true)
     public abstract Event map(@Nullable NewEventDto dto);
 
     protected LocationDto toLocationDto(Float lat, Float lon) {
@@ -119,6 +129,12 @@ public abstract class EventMapper {
                 .lat(lat)
                 .lon(lon)
                 .build();
+    }
+
+    protected List<CommentDto> mapComments(Event model) {
+        return model.getConfirmedComments().stream()
+                .map(commentMapper::map)
+                .collect(Collectors.toList());
     }
 
     @Nullable

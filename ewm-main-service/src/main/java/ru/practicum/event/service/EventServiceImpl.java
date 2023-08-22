@@ -127,6 +127,7 @@ class EventServiceImpl implements EventService {
                         .state(EventState.PENDING)
                         .initiator(user)
                         .requests(Collections.emptyList())
+                        .comments(Collections.emptyList())
                         .viewCount(0L)
                         .build()
         );
